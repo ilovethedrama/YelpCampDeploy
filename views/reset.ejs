@@ -1,0 +1,25 @@
+<% include ./partials/header %>
+
+<div class='container'>
+    <div class='row'>
+        <div class='col-md-12'>
+            <form action='/reset/<%= token %>' method='POST'>
+                <legend>Reset Password</legend>
+                    <div class='form-group'>
+                        <label for='password'>New Password</label>
+                        <input type='password' name='password' value='' autofocus  class='form-control' placeholder='enter new password' required>
+                        <!--this email value can be pulled using req.body.email in the routes section-->
+                    </div>
+                    <div class='form-group'>
+                        <label for='confirm'>Confirm Password</label>
+                        <input type='password' name='confirm' value='' placeholder='Say it wit yo chest' class='form-control'>
+                    </div>
+                    <div class='form-group'>
+                        <input type='submit' name='Update' class='btn btn-primary'>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<% include ./partials/footer %>

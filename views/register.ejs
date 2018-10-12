@@ -1,0 +1,28 @@
+<% include ./partials/header %>
+
+
+<div class='container'>
+    <div class='row'>
+        
+        <h1>Account Sign Up</h1>
+
+
+        <form action='/register' method='POST'>
+            <div class='form-group'>
+                <label for='username'>Username : </label>
+                <input type='text' name='username' autofocus placeholder='enter username here' required>
+            </div>
+            <div class='form-group'>
+                 <label for='username'>Email : </label>
+                <input type='text' name='email' placeholder='enter email here' required>
+            </div>
+            <div class='form-group'>
+                 <label for='username'>Password : </label>
+                <input type='password' name='password' placeholder='enter password here' required>
+            </div>
+                <button class='btn btn-primary'>Sign Up</button>
+        </form>    
+    </div>
+</div>
+
+<% include ./partials/footer %>

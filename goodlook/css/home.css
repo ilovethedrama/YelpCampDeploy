@@ -1,0 +1,111 @@
+body {
+    background-color: black;
+    text-align: center;
+}
+
+#landing-header {
+    z-index: 1; 
+    /* brings element forward in the space of the page, 
+    layering it on top of any other element with a z-index less than 1, b
+    ut the position must also be anything other than static 
+    i.e. relative, as static ignores z-index*/
+    position: relative;
+    text-align: center;
+    padding-top: 40vh;
+}
+
+#landing-header h1 {
+    color: #fff;
+}
+.slideshow {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    /*this ensures the slideshow takes up the whole screen*/
+    top:0;
+    left:0;
+    /* this pushes the slideshow to the
+    top left corner position */
+    z-index:0;
+    /* this sets the slidshow behind the 
+    header text as it is furthest on the z axis */
+    margin:0;
+    padding:0;
+    /* this removes any padding or
+    margin around the slideshow*/
+    list-style-type: none;
+}
+
+.slideshow li {
+    /* selects each list item inside the unordered list within slideshow */
+    width :100%;
+    height :100%;
+    position:absolute;
+    top:0;
+    left:0;
+    background-size: cover;
+    /*allows images to take entire page */
+    background-position: 50% 50%;
+    /*this centers the images */
+    background-repeat: no-repeat;
+    /* this prevents and repetition of the image */
+    opacity: 0;
+    /*this allows the transition by starting each image as invisible */
+    z-index:0;
+    /* pushes the image to the back of the layer stack */
+    animation: flexOnEm 50s linear infinite;
+    /* this slowly fades the image back in, 
+    the animation is given the name flexOnEm, 
+    it lasts for 50 secs, is continuous speed
+    i.e. linear and keeps looping 4eva */
+}
+
+.slideshow li:nth-child(1){
+    background-image: url(https://images.unsplash.com/photo-1497209483929-d15a3d5afba3?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=b4e13bd48f5c3b5f86b1bbadfb6fa4ab&auto=format&fit=crop&w=975&q=80);
+}
+
+.slideshow li:nth-child(2){
+    background-image: url(https://images.unsplash.com/photo-1527623629755-17eaa73534e2?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=bb82151e75bdf0701775a2451cc2532d&auto=format&fit=crop&w=1050&q=80);
+    animation-delay: 10s;
+}
+
+.slideshow li:nth-child(3){
+    background-image: url(https://images.unsplash.com/photo-1518425763091-657cd6c2ab28?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=09af88fe217f8f45a85ffa8250bdd0eb&auto=format&fit=crop&w=1258&q=80);
+    animation-delay: 20s;
+}
+
+.slideshow li:nth-child(4){
+    background-image: url(https://images.unsplash.com/photo-1520285774798-2f1616131a68?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a2d5d974849f34da57c1eaac884b3c55&auto=format&fit=crop&w=1050&q=80);
+    animation-delay: 30s;
+}
+
+.slideshow li:nth-child(5){
+    background-image: url(https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=829af84f5b0f6ac52a295c3b90c63b47&auto=format&fit=crop&w=1050&q=80);
+    animation-delay: 40s;
+}
+
+@keyframes flexOnEm {
+    0% {
+        opacity: 0;
+        animation-timing-function: ease-in;
+    }
+    10% {
+        opacity: 1;
+        animation-timing-function: ease-out;
+    }
+    20% {
+        opacity: 1;
+    }
+    30% {
+        opacity: 0;
+    }
+}
+
+/* the above creates 5 images that will animate 10 seconds a piece
+over 50 secs, fading in, and then fading out into the next image, 
+each image visible for 5 secs with a 5 sec transition */
+
+/* Older Browser Support - .no-cssanimations class added by modernizr*/
+.no-cssanimations .slideshow li {
+    opacity: 1;
+}

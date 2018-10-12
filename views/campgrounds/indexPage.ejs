@@ -1,0 +1,50 @@
+<% include ../partials/header %>
+
+
+<div class='container'>
+          <header class='jumbotron'>
+                    <div class="container">
+                    <h1>Country Escapes Inc.</h1>
+                    <p>Premium camping experiences</p>
+                    <% if(currentUzr) { %>
+                         <p>
+                              <a class='btn btn-primary btn-lg' href='/campgrounds/new'>Add A New Camp Site</a>
+                         </p>
+                    <% } %>
+                    </div>
+          </header>
+
+
+          <div class='row text-center' style='display:flex; flex-wrap:wrap'>
+               <div class='col-md-12'>
+                    <!--md-12 centers text as it goes across all 12 partitions of a screen-->
+                    <% if(noMatchFoundMsg.length > 1) { %>
+                    <h3><%= noMatchFoundMsg %></h3>
+                    
+                      <p>
+                         <form action='/campgrounds' method='GET' class='form-inline'>
+                              <div class='form-group'>
+                                   <input type='text' name='search' placeholder='Enter search term here' class='form-control'>
+                                   <input type='submit' value='search' class='btn btn-default'>
+                              </div>
+                         </form>
+                    </p>
+                    <% } %>
+               </div>
+               
+               <% campgroundList.forEach(function(plot){ %>
+                    <div class='col-md-3 col-sm-6'>
+                         <div class="thumbnail">
+                              <img src='<%= plot.pic%>'>
+                                <div class="caption">
+                              <h4><%= plot.name %></h4>
+                              <!--<p> Available from:--this will truncate post to first 50 characters-->
+                              <p> Available from: <%- plot.avDate %>...</p>
+                              <a href='/campgrounds/<%= plot._id %>'>More Info</a>
+                              </div>
+                         </div>
+                    </div>
+          <% }); %>
+          </div>
+</div>
+<% include ../partials/footer %>

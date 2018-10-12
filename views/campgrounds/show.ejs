@@ -1,0 +1,68 @@
+<% include ../partials/header %>
+   <div class='container'>
+       <div class='row'>
+           <div class='col-md-3'>
+               <p class='lead'>Yelpcamp</p>
+               <div class='list-group'>
+                   <li class='list-group-item' active>Info 1</li>
+                   <li class='list-group-item' active>Info 2</li>
+                   <li class='list-group-item' active>Info 3</li>
+               </div>
+           </div>
+           <div class='col-md-9'>
+               <div class='thumbnail'>
+                   <img class'img-responsive' src='<%= plot.pic %>'>
+                   <div class='caption-full'>
+                       <h4 class='pull-right'>£<%= plot.price %>/night</h4>
+                       <h5><a><%= plot.name %></a></h5>
+                       <p>Available from: <%= plot.avDate %></p>
+                       <p>
+                           <em>Uploaded by : <%= plot.author.username %>, <%= moment(plot.createdAt).fromNow() %></em>
+                       </p>
+                       <!--everythng has access to currentUzr as it was defined in the app.js as middleware -->
+                       <% if(currentUzr && plot.author.id.equals(currentUzr._id)){ %> 
+                            <a class='btn btn-xs btn-warning' href='/campgrounds/<%= plot._id %>/edit'>Edit</a>
+                            <form class='' action='/campgrounds/<%= plot.id %>?_method=DELETE' method='POST'>
+                                <button class='deleteform btn btn-xs btn-danger'>Delete</button>
+                            </form>
+                        <% } %>
+                   </div>
+               </div>
+               <div class='well'>
+                   <div class='text-right'>
+                        <a class='deleteform btn btn-success' href='/campgrounds/<%= plot._id %>/comments/new'>Add New Comment</a>
+                   </div>
+                   <hr>
+                         <h3>Visitor Reviews</h3>
+                            <% plot.comments.forEach(function(comment){ %>
+                                <div class='row'>
+                                    <div class='col-md-12'>
+                                        <%=  comment.author.username %> <!--this refers to the comment schema-->
+                                        <span class='pull-right'><%= moment(comment.createdAt).fromNow() %></span>
+                                        <p>
+                                            <%= comment.text %>
+                                        </p>
+                                    <% if(currentUzr && comment.author.id.equals(currentUzr._id)){ %>
+                                       <a class='delete-form btn btn-xs btn-warning' 
+                                                href='/campgrounds/<%= plot._id %>/comments/<%= comment._id %>/edit'>
+                                            Edit
+                                        </a>
+                                    
+                                        <form class='delete-form' action='/campgrounds/<%= plot._id %>/comments/<%= comment._id %>?_method=DELETE' method='POST'>
+                                         <!--space-->
+                                            <input type='submit' class='btn btn-xs btn-danger' value='Delete'>
+                                        </form>
+                                    
+                            <% } %>
+                                    </div>
+                                </div>
+                            <% }) %>             
+                        </div>
+                    </div>
+                </div>
+            </div> 
+    
+    <a href='/campgrounds'>Back to Current Campsites</a>
+</div>
+    
+<% include ../partials/footer %>
