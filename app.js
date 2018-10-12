@@ -18,9 +18,11 @@ var commentRoutes       = require('./routes/comments'),
     campgroundRoutes    = require('./routes/campgrounds'),
     authRoutes          = require('./routes/auth');
 
-mongoose.connect('mongodb://localhost/dynamoP');
-//mongoose.connect('mongodb://Yelpcamp_1st:21dimmock@ds215633.mlab.com:15633/yelpcamp_mena');
+mongoose.connect(process.env.dbURL);
+// mongoose.connect('mongodb://Yelpcamp_1st:21dimmock@ds215633.mlab.com:15633/yelpcamp_mena');
 
+
+ 
 app.use(methodOverride('_method')); //any time '_method' is seen in a form, the request will be treated as a PUT or DELETE
 app.use(bodyP.urlencoded({extended:true}));
 app.set('view engine', 'ejs'); //sets the default file as ejs - no need for the suffix bro!
