@@ -1,4 +1,4 @@
-require('dotenv').config();
+//require('dotenv').config(); //
 
 var Campground      = require('./models/campground'),
     Comment         = require('./models/comment'),
@@ -17,9 +17,17 @@ var Campground      = require('./models/campground'),
 var commentRoutes       = require('./routes/comments'),
     campgroundRoutes    = require('./routes/campgrounds'),
     authRoutes          = require('./routes/auth');
+/////////////this
+//mongoose.connect(process.env.dbURL);
+/////////////becomes
+    // var url = process.env.dbURL ||'mongodb://localhost/dynamoP';
+    // mongoose.connect(url);
+//this is a backup so if someone uses for dev in future and the env variable
+//is not added it will pipe through the other address to bring up the db
 
-mongoose.connect(process.env.dbURL);
-// mongoose.connect('mongodb://Yelpcamp_1st:21dimmock@ds215633.mlab.com:15633/yelpcamp_mena');
+////THE LOCAL DB  ///// mongoose.connect('mongodb://localhost/dynamoP');
+////THE HEROKU ONE //// 
+mongoose.connect('mongodb://Yelpcamp_1st:21dimmock@ds215633.mlab.com:15633/yelpcamp_mena');
 
 
  
