@@ -3,25 +3,25 @@
     <div class="row">
         <div style='width:30%; margin: 0 auto'>
         <h2>New Entry</h2>
-        <form action='/campgrounds' method='POST'>
+        <form action='/campgrounds' method='POST' enctype='multipart/form-data'><!--needed for file upload to rec. form-->
             <div class="form-group field">
                 <label>Title</label>
-                <input class='form-control' type='text' name='name' placeholder='title'>
+                <input class='form-control' type='text' name='campground[name]' placeholder='title'>
             </div>
             
             <div class="form-group">
                 <label>Image</label>
-                <input class='form-control' type='text' name='pic' placeholder='image'>
-            </div>
+                <input class='form-control' type='file' name='pic' placeholder='image' id='pix' accept='image/*'>
+            </div> <!--the accept='image/* will only permit image files to be uploaded-->
     
             <div class="form-group">
                 <label>Availability Date</label>
-                <input class='form-control' type='text' name='avDate' placeholder='ready from?'>
+                <input class='form-control' type='text' name='campground[avDate]' placeholder='ready from?'>
             </div>
     
             <div class="form-group">
                 <label>Price</label>
-                <input class='form-control' type='number' name='price' placeholder='retail price' min='0.01' step='0.01'>
+                <input class='form-control' type='number' name='campground[price]' placeholder='retail price' min='0.01' step='0.01'>
                 <!--storing the price as a string in the campground model allows easier formatting
                 the step allows for 1p incremnts when setting the price-->
             </div>

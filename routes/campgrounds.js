@@ -4,6 +4,36 @@ var Campground = require('../models/campground');
 var midObj = require('../middleware');
 //the index.js from '../middleare/index.js' can be omitted as by 'index' is searched for by default 
 
+// var request = require('request');
+
+////////////////////////MULTER SET UP
+var multer = require('multer'); 
+//defines a storage variable and configures an object inside the multer diskstorage method
+//when a file is uploaded a custom name is created with the date and filename
+var storage = multer.diskStorage({
+    filename: function(req, file, callback) {
+        callback(null, Date.now() + file.originalname);
+    }
+});
+//this sets up an imagefilter that makes sure any file uploaded must have one of the below files and will bring an error with anythinh else
+var imageFilter = function (req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif|tif|webp)$/i)) {
+        return cb(new Error('Aye bruh! Only image files are allowed'), false);
+    }
+    cb(null, true);
+};
+//this sets up config items such as the storage as the storage var created
+//and fileFilter as imageFilter, the variable that was created
+var upload = multer({ storage, fileFilter: imageFilter});
+
+////////////////////////CLOUDINARY SET UP
+var cloudinary = require('cloudinary');
+cloudinary.config({
+   cloud_name: 'yelpcampmedia',
+   api_key: process.env.CLOUDINARY_API_KEY,
+   api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
 //INDEX
 router.get('/', function(req, res){
     var noMatch = '';
@@ -42,25 +72,48 @@ router.get('/', function(req, res){
 });
 
 //CREATE
-router.post('/', midObj.isLoggedIn, function(req,res){
-    var pic = req.body.pic; //req.body is way of getting info from form using body parser 
-    var ava = req.body.avDate;
-    var name = req.body.name;
-    var price = req.body.price;
-    var author = {
-        id: req.user._id,
-        username: req.user.username
-    }; 
-    var newCmpgnd = {pic:pic, avDate:ava, name:name, author:author, price:price}; //these values match the campground schema (pic, name, avDate, author)
-   console.log(req.user.username);
-   Campground.create(newCmpgnd, function(err, newList){
-       if(err){
-           res.render('new');
-       } else {
-           console.log(newList);
-           res.redirect('/campgrounds');
-       }
-   });
+// router.post('/', midObj.isLoggedIn, function(req,res){
+//     var pic = req.body.pic; 
+        //req.body is way of getting info from form using body parser at this point in the code in the new
+        //campgrounds ejs file each form input would be name = pic as opposed to campground[pic] 
+//     var ava = req.body.avDate;
+//     var name = req.body.name;
+//     var price = req.body.price;
+//     var author = {
+//         id: req.user._id,
+//         username: req.user.username
+//     }; 
+//     var newCmpgnd = {pic:pic, avDate:ava, name:name, author:author, price:price}; //these values match the campground schema (pic, name, avDate, author)
+//   console.log(req.user.username);
+//   Campground.create(newCmpgnd, function(err, newList){
+//       if(err){
+//           res.render('new');
+//       } else {
+//           console.log(newList);
+//           res.redirect('/campgrounds');
+//       }
+//   });
+// });
+
+/////////////////INSTEAD OF THIS ^^ THE BELOW :
+router.post('/', midObj.isLoggedIn, upload.single('pic'), function(req,res){
+    //the req.file.path comes from multer set up in the storage var
+    cloudinary.uploader.upload(req.file.path, function(result) {
+        //add cloudinary url for the image to the campground object under image property
+  req.body.campground.pic = result.secure_url;
+  // adds author, name & avDate info to campground
+  req.body.campground.author = { id: req.user._id, username: req.user.username };
+  req.body.campground.name;
+  req.body.campground.avDate;
+  //creates a new campground taking all info from campground via req.body.campground
+Campground.create(req.body.campground, function(err, campground) {
+            if (err) {
+              req.flash('error', err.message);
+              return res.redirect('back');
+            }
+            res.redirect('/campgrounds/' + campground.id);
+          });
+    });
 });
 
 //NEW
