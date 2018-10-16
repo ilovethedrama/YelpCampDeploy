@@ -1,4 +1,4 @@
-//require('dotenv').config(); //
+require('dotenv').config(); 
 
 var Campground      = require('./models/campground'),
     Comment         = require('./models/comment'),
@@ -20,17 +20,17 @@ var commentRoutes       = require('./routes/comments'),
 /////////////this
 //mongoose.connect(process.env.dbURL);
 /////////////becomes
-    // var url = process.env.dbURL ||'mongodb://localhost/dynamoP';
-    // mongoose.connect(url);
-//this is a backup so if someone uses for dev in future and the env variable
+    var url = process.env.dbURL ||'mongodb://localhost/dynamoP';
+    mongoose.connect(url);
+    
+//the env has been set up in c9 and heroku as dbURL so when opened in either it will work
+//if this is shared source but someone did not have the env set up the dynamoP link would
+//work as a backup so if someone uses for dev in future and the env variable
 //is not added it will pipe through the other address to bring up the db
 
 ////THE LOCAL DB  ///// mongoose.connect('mongodb://localhost/dynamoP');
-////THE HEROKU ONE //// 
-mongoose.connect('mongodb://Yelpcamp_1st:21dimmock@ds215633.mlab.com:15633/yelpcamp_mena');
+////THE HEROKU ONE //// mongoose.connect('mmongodb://<dbuser>:<dbpassword>@ds215633.mlab.com:15633/yelpcamp_mena);g
 
-
- 
 app.use(methodOverride('_method')); //any time '_method' is seen in a form, the request will be treated as a PUT or DELETE
 app.use(bodyP.urlencoded({extended:true}));
 app.set('view engine', 'ejs'); //sets the default file as ejs - no need for the suffix bro!
@@ -79,4 +79,6 @@ app.use('/campgrounds/:id/comments', commentRoutes);
 
 app.listen(process.env.PORT, process.env.IP, function(){
    console.log("Yeah baby...We live!!"); 
+//   console.log(process.env.PORT); 
+//   console.log(process.env.IP); 
 });
