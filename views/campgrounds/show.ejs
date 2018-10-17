@@ -17,7 +17,7 @@
                        <h5><a><%= plot.name %></a></h5>
                        <p>Available from: <%= plot.avDate %></p>
                        <p>
-                           <em>Uploaded by : <%= plot.author.username %>, <%= moment(plot.createdAt).fromNow() %></em>
+                           <em>Uploaded by : <a href="/users/<%= plot.author.id %>"><%= plot.author.username %></a>, <%= moment(plot.createdAt).fromNow() %></em>
                        </p>
                        <!--everythng has access to currentUzr as it was defined in the app.js as middleware -->
                        <% if(currentUzr && plot.author.id.equals(currentUzr._id) || currentUzr && currentUzr.isRickDaRula){ %> 

@@ -17,7 +17,9 @@ var UserSchema = new mongoose.Schema({ //each user needs a u.name + pwd
             {
                 type: Boolean, 
                 default: false
-            }
+            },
+    avatar: String,
+    displayName: String
 });
 
 UserSchema.plugin(ppLM); //adds methods from passport to the userschema

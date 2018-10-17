@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 var User = require('../models/user');
+var Campground = require('../models/campground');
 var    crypto          = require('crypto');
 var     nodemailer      = require('nodemailer');
 var async       = require('async');
@@ -24,11 +25,18 @@ router.get('/register', function(req, res){
 
 //handles SIGN UP logic
 router.post('/register', function(req, res){
-    var newSignUp = new User({username: req.body.username, email: req.body.email});
+    var newSignUp = new User({
+                                username: req.body.username, 
+                                email: req.body.email,
+                                displayName : req.body.displayName,
+                                avatar: req.body.avatar
+                                //admin code + pwd are sensitive and dealt with separately, below. So the new user obj is created, 
+                                //admin is either added or not depending on the code entered and then the pwrd is also passed in during registration
+                            });
+    //   eval(require('locus')); //this npm package helps with debugging, it will stop the code at this line and allow you to see the variables available for use
     if(req.body.adminCode === 'beyoncewolfcastle') {
         newSignUp.isRickDaRula = true;
     }
-    //eval(require('locus')); //this npm package helps with debugging, it will stop the code at this line and allow you to see the variables available for use
     User.register(newSignUp, req.body.password, function(err, nuUser){
       if(err){
           console.log(err);
@@ -239,5 +247,24 @@ function isLoggedIn(req, res, next){
     }
     res.redirect('/login');
 }
+
+////////USER PROFILE ROUTE
+router.get('/users/:id', function(req, res){
+  User.findById(req.params.id, function(err, returnedUser) { //req.params.id enables the id info to be used 
+      if(err) {
+          req.flash('error', 'Waaaahhhh');
+          res.redirect('/');
+      }
+      Campground.find().where('author.id').equals(returnedUser._id).exec(function(err, campgrounds) {
+          if(err) {
+              req.flash('error', 'Hmmmmm day work');
+              res.redirect('/');
+          }
+      res.render('users/profile', { user: returnedUser, campgrounds: campgrounds});
+      //this is so that in the profile ejs the returneduser value can be
+      //plugged in as user, and user.avatar etc can be like totally a thing    
+      });
+  }) ;
+});
 
 module.exports = router;
