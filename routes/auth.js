@@ -25,6 +25,10 @@ router.get('/register', function(req, res){
 //handles SIGN UP logic
 router.post('/register', function(req, res){
     var newSignUp = new User({username: req.body.username, email: req.body.email});
+    if(req.body.adminCode === 'beyoncewolfcastle') {
+        newSignUp.isRickDaRula = true;
+    }
+    //eval(require('locus')); //this npm package helps with debugging, it will stop the code at this line and allow you to see the variables available for use
     User.register(newSignUp, req.body.password, function(err, nuUser){
       if(err){
           console.log(err);

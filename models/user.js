@@ -13,7 +13,11 @@ var UserSchema = new mongoose.Schema({ //each user needs a u.name + pwd
     email: String,
     resetPwdToken: String,
     resetPwdExp: Date,
-    isRickDaRula: {type: Boolean, default: false}
+    isRickDaRula: 
+            {
+                type: Boolean, 
+                default: false
+            }
 });
 
 UserSchema.plugin(ppLM); //adds methods from passport to the userschema

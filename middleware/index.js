@@ -4,7 +4,9 @@ var Comment = require('../models/comment');
 var midObj = {};
 
 midObj.checkCampgroundOwnership = function(req, res, next) {
+   //if you're logged in...
     if(req.isAuthenticated()){
+        //find the campground by it's ID
         Campground.findById(req.params.id, function(err, actualSite){
                 if(err){
                    req.flash('error', 'No, nooooo is no here. Noooo...');
@@ -16,7 +18,8 @@ midObj.checkCampgroundOwnership = function(req, res, next) {
                     //.equals() is is a mongoose method as the req.user.id is a string, 
                     //the other is a mongoose object though they would both console log identically.
                     //the equals allows the two to be compared
-                    if(actualSite.author.id.equals(req.user._id)) {
+                    if(actualSite.author.id.equals(req.user._id) || req.user.isRickDaRula ) {
+                        //if the returned campground author id is the same as the user logged in or if they are an admin then proceed.  
                         next();
                          console.log('That worked so now...Going on to the next bit of the code!');
                     } else {
@@ -35,7 +38,7 @@ midObj.checkCampgroundOwnership = function(req, res, next) {
 };
 
 midObj.isThisUrs = function(req, res, next){
- if(req.isAuthenticated()){ //this looks 2c is user logged in?
+ if(req.isAuthenticated() || req.user.isRickDaRula ){ //this looks 2c is user logged in?
      Comment.findById(req.params.comment_id, function(err, gotIt) {
          if(err){
              res.redirect('back');

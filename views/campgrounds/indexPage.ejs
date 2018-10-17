@@ -1,5 +1,11 @@
 <% include ../partials/header %>
 
+<% if (currentUzr && currentUzr.isRickDaRula) { %> 
+<!--if there is a current user and the current user is an admin dispay the message. 
+Must have if there is a user as well as if the user is an admin as if it was just
+if current user is admin it would break if the person on the site wasn't signed in-->
+     <h2>You're an admin user. Oshh</h2>
+<% } %>
 
 <div class='container'>
           <header class='jumbotron'>
